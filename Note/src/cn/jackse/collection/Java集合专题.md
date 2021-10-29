@@ -103,7 +103,7 @@
                 e = p;
             
             /**
-            	在判断p是不是一个红黑树
+            	再判断p是不是一个红黑树
             	如果是，则调用putTreeVal方法，来进行添加
             */
             else if (p instanceof TreeNode)
@@ -193,6 +193,111 @@
 ​	 
 
 2、![image-20211026162712023](https://gitee.com/jzy0101/image/raw/master/img/202110261627255.png)
+
+
+
+# Map
+
+## HashMap
+
+源码解读：
+
+
+
+> HashMap有横着的和竖着的，竖着的是达到临界值之后进行扩容；如果横着的达到了8，那么以后每次添加元素都会进行扩容。
+
+
+
+```java
+public class MapSrc2 {
+    public static void main(String[] args) {
+        HashMap hashMap = new HashMap();
+
+        for (int i = 1; i <= 12; i++) {
+            hashMap.put(new A(i), "hello");
+        }
+
+        System.out.println("hashMap=" + hashMap);
+    }
+}
+
+class A {
+    private int num;
+
+    public A(int num) {
+        this.num = num;
+    }
+
+
+    @Override
+    public int hashCode() {
+        return 100;
+    }
+
+    @Override
+    public String toString() {
+        return "\nA{" +
+                "num=" + num +
+                '}';
+    }
+}
+```
+
+
+
+
+
+## Hashtable
+
+- Hashtable的键和值都不能为null，佛iu则会抛出NullPointerException
+- Hashtable是线程安全的，HashMap是线程不安全的
+
+
+
+### 底层逻辑
+
+- 底层有数组 Hashtable$Entry[] 初始化大小为 11
+- 临界值 threshold = 8  = 11*0.75
+- 扩容：按照自己的扩容机制来进行即可
+- 执行 方法 addEntry(hash,key,value,index); 添加 K-V 封装到 Entry
+
+
+
+
+
+## Properties
+
+- Properties 还可以用于 从xxx.properties 文件中，加载数据到Properties类对象，并进行读取和修改。
+
+
+
+
+
+## 总结-开发中如何选择集合类（记住）
+
+![image-20211028100911542](https://gitee.com/jzy0101/image/raw/master/img/202110281009851.png)
+
+
+
+> 试分析HashSet和TreeSet分别是如何实现去重的
+
+- HashSet的去重机制
+
+    ```markdown
+    hashCode() + equals(),底层先通过存入对象，进行运算得到一个hash值，通过hash值得到对应的索引，如果发现table索引所在的位置没有数据，就进行equals()比较【遍历比较】【哪些值相等可以由程序员控制】，如果比较后不相同，就加入；否则不加入
+    ```
+
+    
+
+- TreeSet的去重机制
+
+    ```markdown
+    如果传入了一个Comparator匿名对象，就是用实现的compare去重，如果方法返回0，就认为试相同的元素/数据，就不再进行添加；如果没有传入一个Comparator匿名对象，则以添加的对象实现的Comparable接口的compareTo去重
+    ```
+
+    
+
+
 
 
 
